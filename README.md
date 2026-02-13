@@ -1,230 +1,291 @@
-# MDB Protocol Decoder v9
+# MDB Protocol Decoder v10
 
-🚀 **Professional MDB (Multi-Drop Bus) Protocol Decoder for Saleae Logic Analyzer**
+🚀 **Profesyonel MDB (Multi-Drop Bus) Protokol Çözücü - Saleae Logic Analyzer**
 
-A comprehensive decoder that details MDB commands and parses internal data with advanced 9-bit to 2-byte conversion logic.
+Cashless Device, Coin Changer ve Bill Validator desteği ile gelişmiş 9-bit → 2 byte dönüşüm sistemi.
 
-## 📸 Live Screenshots
+## 📸 Ekran Görüntüleri
 
-The images above show the decoder in action:
-- **Real-time MDB protocol analysis** with detailed command parsing
-- **Enhanced timeline view** showing POLL/ACK cycles and VEND transactions  
-- **Console output** with human-readable command descriptions and data values
-- **Professional visualization** of vending machine communication protocols
+Çözücünün çalışma anından görüntüler:
 
-A comprehensive decoder that details MDB commands and parses internal data with advanced 9-bit to 2-byte conversion logic.
+- **Gerçek zamanlı MDB protokol analizi** - Detaylı komut ayrıştırma
+- **Gelişmiş zaman çizelgesi** - POLL/ACK döngüleri ve VEND işlemleri
+- **Konsol çıktısı** - İnsan tarafından okunabilir komut açıklamaları
+- **Profesyonel görselleştirme** - Otomat iletişim protokolleri
 
-## 🎯 Purpose
+## 🎯 Amaç
 
-This decoder is designed to:
-- **Detail MDB Commands**: Parse and identify all MDB protocol commands
-- **Data Extraction**: Extract and interpret data from MDB packets
-- **Enhanced Analysis**: Provide human-readable analysis of vending machine communications
-- **Real-time Decoding**: Live analysis during protocol debugging
+Bu çözücü şunlar için tasarlanmıştır:
 
-## ⚡ Key Features
+- **MDB Komut Detaylandırma**: Tüm MDB protokol komutlarını ayrıştırma ve tanımlama
+- **Veri Çıkarma**: MDB paketlerinden veri çıkarma ve yorumlama
+- **Gelişmiş Analiz**: Otomat iletişimlerinin insan tarafından okunabilir analizi
+- **Gerçek Zamanlı Çözümleme**: Protokol hata ayıklama sırasında canlı analiz
 
-### 🔧 Technical Capabilities
-- **9-bit → 2 byte conversion**: Proper handling of MDB's unique data format
-- **Packet length analysis**: Dynamic parsing based on packet size
-- **Command-Response correlation**: Tracks command context for accurate response interpretation
-- **Enhanced frame types**: Special analysis for critical operations
+## ⚡ Temel Özellikler
 
-### 📊 Supported MDB Commands
-| Command | Code | Description |
-|---------|------|-------------|
-| RESET | 0x10 | System reset command |
-| SETUP | 0x11 | Device configuration |
-| POLL | 0x12 | Status polling |
-| VEND | 0x13 | Vending operations |
-| READER | 0x14 | Card reader commands |
-| REVALUE | 0x15 | Credit operations |
-| EXPANSION | 0x17 | Extended features |
+### 🔧 Teknik Yetenekler
 
-### 🎨 Enhanced Analysis
-- **BEGIN_SESSION**: Detailed funds and level analysis
-- **PERIPHERAL_ID**: Manufacturer and serial number extraction
-- **VEND_APPROVED/DENIED**: Transaction amount parsing
-- **READER_CONFIG**: Feature level and country code analysis
+- **9-bit → 2 byte dönüşüm**: MDB'nin benzersiz veri formatının doğru işlenmesi
+- **Paket uzunluğu analizi**: Paket boyutuna göre dinamik ayrıştırma
+- **Komut-Cevap korelasyonu**: Doğru cevap yorumlama için komut bağlamı takibi
+- **Modüler dispatch mimarisi**: Her periferik tipi için ayrı handler metodları
+- **Gelişmiş frame tipleri**: Kritik işlemler için özel analiz
 
-## 📖 Symbol Guide
+### 📊 Desteklenen MDB Komutları
 
-When running the decoder, you'll see these symbols in the debug output:
+#### Cashless Device (0x10–0x17)
 
-| Symbol | Meaning | Description |
-|--------|---------|-------------|
-| `->` | ACK Response | Device acknowledges VMC command |
-| `<-` | POLL Command | VMC polls device for status |
+| Komut     | Kod  | Açıklama                 |
+| --------- | ---- | ------------------------ |
+| RESET     | 0x10 | Sistem sıfırlama komutu  |
+| SETUP     | 0x11 | Cihaz yapılandırma       |
+| POLL      | 0x12 | Durum sorgulama          |
+| VEND      | 0x13 | Satış işlemleri          |
+| READER    | 0x14 | Kart okuyucu komutları   |
+| REVALUE   | 0x15 | Kredi işlemleri          |
+| EXPANSION | 0x17 | Genişletilmiş özellikler |
 
-## 🚀 Installation
+#### Coin Changer (0x08–0x0F)
 
-1. **Download** the `mdb_decoder.py` file
-2. **Copy** to your Saleae Logic 2 extensions folder:
-   - **Windows**: `%USERPROFILE%\Documents\Logic2Extensions`
-   - **macOS**: `~/Documents/Logic2Extensions`
-   - **Linux**: `~/Documents/Logic2Extensions`
-3. **Restart** Saleae Logic 2
-4. **Add Analyzer** → Search for "MDB Protocol Decoder"
+| Komut            | Kod  | Açıklama                                   |
+| ---------------- | ---- | ------------------------------------------ |
+| COIN_RESET       | 0x08 | Bozuk para makinesi sıfırlama              |
+| COIN_SETUP       | 0x09 | Cihaz yapılandırma bilgileri               |
+| COIN_TUBE_STATUS | 0x0A | Tüp doluluk durumu                         |
+| COIN_POLL        | 0x0B | Etkinlik durumu sorgulama                  |
+| COIN_TYPE        | 0x0C | Para tipi etkinleştirme/devre dışı bırakma |
+| COIN_DISPENSE    | 0x0D | Para verme komutu                          |
+| COIN_EXPANSION   | 0x0F | Genişletilmiş özellikler                   |
 
-## 🔌 Usage
+#### Bill Validator (0x30–0x37)
 
-### Basic Setup
-1. Connect your logic analyzer to MDB bus
-2. Set sampling rate to **1 MHz or higher**
-3. Add the MDB Protocol Decoder to your data channel
-4. Configure analyzer settings:
-   - **Data Channel**: Select your MDB data line
-   - **Clock Channel**: Select your MDB clock line (if available)
+| Komut          | Kod  | Açıklama                                      |
+| -------------- | ---- | --------------------------------------------- |
+| BILL_RESET     | 0x30 | Banknot doğrulayıcı sıfırlama                 |
+| BILL_SETUP     | 0x31 | Yapılandırma durum bilgisi                    |
+| BILL_SECURITY  | 0x32 | Güvenlik modu ayarı                           |
+| BILL_POLL      | 0x33 | Etkinlik durumu sorgulama                     |
+| BILL_TYPE      | 0x34 | Banknot tipi etkinleştirme/devre dışı bırakma |
+| BILL_ESCROW    | 0x35 | Emanet işlemi (yığınla veya iade et)          |
+| BILL_STACKER   | 0x36 | Yığın doluluk durumu                          |
+| BILL_EXPANSION | 0x37 | Genişletilmiş özellikler                      |
 
-### Reading Results
-The decoder provides multiple view formats:
+### 🎨 Gelişmiş Analiz
 
-#### 📱 Timeline View
-- **POLL**: Simple poll commands
-- **ACK**: Acknowledgment responses  
-- **CMD: 0x113 (VEND)**: Detailed command info
-- **DATA: 0x001**: Raw data packets
-- **BEGIN SESSION - Funds: 500, Level: 1**: Enhanced analysis
+- **BEGIN_SESSION**: Detaylı bakiye ve seviye analizi
+- **PERIPHERAL_ID**: Üretici ve seri numarası çıkarma
+- **VEND_APPROVED/DENIED**: İşlem tutarı ayrıştırma
+- **READER_CONFIG**: Özellik seviyesi ve ülke kodu analizi
+- **SELECTION_REQUEST**: Ürün seçimi ve bakiye bilgisi
+- **DISPLAY_REQUEST**: Gösterim süresi ve veri ayrıştırma
+- **MALFUNCTION**: Hata kodu tanımlama
+- **COIN_DEPOSITED/DISPENSED**: Para tipi ve rota bilgisi
+- **BILL_ACCEPTED/ESCROW/REJECTED**: Banknot durumu ve yönlendirme
 
-#### 🖥️ Console Output
-Detailed debug information including:
+## 📖 Sembol Rehberi
+
+Çözücüyü çalıştırdığınızda debug çıktısında bu sembolleri göreceksiniz:
+
+| Sembol | Anlam       | Açıklama                    |
+| ------ | ----------- | --------------------------- |
+| `->`   | ACK Cevabı  | Cihaz VMC komutunu onaylar  |
+| `<-`   | POLL Komutu | VMC cihazdan durum sorgular |
+
+## 🚀 Kurulum
+
+1. Bu depoyu **indirin** veya klonlayın
+2. Klasörü Saleae Logic 2 eklenti dizinine **kopyalayın**:
+   - **Windows**: `%USERPROFILE%\Documents\Saleae\Logic2\Marketplace\Extensions`
+   - **macOS**: `~/Documents/Saleae/Logic2/Marketplace/Extensions`
+   - **Linux**: `~/Documents/Saleae/Logic2/Marketplace/Extensions`
+3. Saleae Logic 2'yi **yeniden başlatın**
+4. **Analyzer Ekle** → "MDB Protocol Decoder" arayın
+
+## 🔌 Kullanım
+
+### Temel Kurulum
+
+1. Lojik analizörünüzü MDB veri yoluna bağlayın
+2. Örnekleme hızını **1 MHz veya üzeri** ayarlayın
+3. Veri kanalınıza MDB Protocol Decoder'ı ekleyin
+4. Analizör ayarlarını yapılandırın:
+   - **Veri Kanalı**: MDB veri hattınızı seçin
+   - **Saat Kanalı**: MDB saat hattınızı seçin (varsa)
+
+### Sonuçları Okuma
+
+#### 📱 Zaman Çizelgesi Görünümü
+
+- **POLL**: Basit sorgulama komutları
+- **ACK**: Onay cevapları
+- **CMD: 0x113 (VEND)**: Detaylı komut bilgisi
+- **DATA: 0x001**: Ham veri paketleri
+- **BEGIN SESSION - Tutar: 500, Seviye: 1**: Gelişmiş analiz
+- **COIN DEPOSITED - Tip: 3, Rota: Tüp**: Bozuk para olayı
+- **BILL ACCEPTED - Tip: 2, Rota: BILL_STACKED**: Banknot olayı
+
+#### 🖥️ Konsol Çıktısı
+
+Detaylı hata ayıklama bilgisi:
+
 ```
-VEND bytes: 0113 (len: 2)
-VEND->VEND_APPROVED response: 000500640000 (len: 6)
-  Vend Amount: 100
+VEND_REQUEST bytes: 011300370064 (uzunluk: 6)
+  Fiyat: 100, Ürün No: 55
+VEND->VEND_APPROVED cevap: 000500640000 (uzunluk: 6)
+  Satış Tutarı: 100
 ```
 
-## 📋 Example Output
+## 📋 Örnek Çıktılar
 
-### Typical MDB Transaction
+### Tipik MDB İşlemi (Cashless)
+
 ```
-<- POLL                     # VMC polls device
--> ACK                      # Device responds
-CMD: 0x113 (VEND)          # VMC sends vend command  
-VEND APPROVED - Amount: 150 # Device approves 150 cents
-BEGIN SESSION - Funds: 500, Level: 1  # Session starts
+<- POLL                          # VMC cihazı sorgular
+-> ACK                           # Cihaz cevap verir
+CMD: 0x113 (VEND)                # VMC satış komutu gönderir
+VEND APPROVED - Tutar: 150       # Cihaz 150 birim onaylar
+BEGIN SESSION - Tutar: 500, Seviye: 1  # Oturum başlar
 ```
 
-### Card Reader Interaction
+### Coin Changer İşlemi
+
+```
+<- COIN_POLL                     # VMC para makinesini sorgular
+COIN DEPOSITED - Tip: 3, Rota: Tüp  # Bozuk para tüpe yönlendirildi
+COIN TUBES - Dolu: T0:5, T1:3, T2:8  # Tüp durumu
+```
+
+### Bill Validator İşlemi
+
+```
+<- BILL_POLL                     # VMC banknot doğrulayıcıyı sorgular
+BILL ESCROW - Tip: 2            # Banknot emanette
+BILL ACCEPTED - Tip: 2, Rota: BILL_STACKED  # Banknot yığına eklendi
+BILL STACKER - Dolu: HAYIR, Adet: 45  # Yığın durumu
+```
+
+### Kart Okuyucu İşlemi
+
 ```
 CMD: 0x114 (READER)
-READER CONFIG - Level: 2, Country: 0x0840
-PERIPHERAL ID - Mfg: ABC, SN: 12345678
+READER CONFIG - Seviye: 2, Ülke: 0x0840
+PERIPHERAL ID - Üretici: ABC, SN: 12345678
 ```
 
-## 🔧 Advanced Features
+## 🔧 Gelişmiş Özellikler
 
-### Protocol Validation
-- **Checksum verification**: Automatic validation of MDB checksums
-- **Sequence tracking**: Monitors command-response pairs
-- **Error detection**: Identifies protocol violations
+### Protokol Doğrulama
 
-### Data Analysis
-- **Currency handling**: Automatic conversion of monetary values
-- **Session tracking**: Follows complete transaction flows
-- **Device identification**: Extracts manufacturer and model info
+- **Checksum doğrulama**: Otomatik MDB checksum kontrolü
+- **Sıra takibi**: Komut-cevap çiftlerini izler
+- **Hata tespiti**: Protokol ihlallerini tanımlar
 
-## 🛠️ Development
+### Veri Analizi
 
-### Code Structure
+- **Para birimi işleme**: Para değerlerinin otomatik dönüşümü
+- **Oturum takibi**: Tam işlem akışlarını izler
+- **Cihaz tanımlama**: Üretici ve model bilgisi çıkarma
+
+## 🛠️ Geliştirme
+
+### Kod Yapısı (v10 - Modüler Mimari)
+
 ```python
 class Hla(HighLevelAnalyzer):
-    def __init__(self):
-        # Initialize decoder with startup message
-        
-    def decode(self, frame):
-        # Main decoding logic
-        # 1. Parse 2-byte packets into 9-bit values
-        # 2. Identify command vs data
-        # 3. Apply context-aware analysis
-        # 4. Return enhanced frame
+    # Sabitler
+    KOMUT_ISIMLERI = {0x08: "COIN_RESET", 0x10: "RESET", 0x30: "BILL_RESET", ...}
+    POLL_CEVAP_ISIMLERI = {0x01: "READER_CONFIG", 0x03: "BEGIN_SESSION", ...}
+
+    def __init__(self):       # Başlatma
+    def decode(self, frame):  # Ana dispatcher
+
+    # Alt işleyiciler
+    def _komut_isle(...)           # Komut ayrımı
+    def _veri_isle(...)            # Veri ayrımı
+    def _uzun_paket_analiz(...)    # Çoklu byte analiz
+    def _poll_cevap(...)           # POLL cevapları
+    def _vend_cevap(...)           # VEND cevapları
+    def _coin_poll_cevap(...)      # Coin olayları
+    def _bill_poll_cevap(...)      # Bill olayları
+    # ... ve dahası
 ```
 
-### Key Components
-- **9-bit Conversion**: `_GetNineBitDeger()` handles bit manipulation
-- **Command Tracking**: `BironcekiKomut` maintains state
-- **Enhanced Parsing**: Specialized functions for each response type
+### Temel Bileşenler
 
-## 📚 MDB Protocol Reference
+- **9-bit Dönüşüm**: 2 byte'ı 9-bit MDB değerine dönüştürme
+- **Komut Takibi**: `BironcekiKomut` ile durum yönetimi
+- **Dispatch Tablosu**: Dictionary tabanlı cevap yönlendirme
+- **Modüler İşleyiciler**: Her periferik tipi için ayrı metodlar
 
-### Packet Structure
+## 📚 MDB Protokol Referansı
+
+### Paket Yapısı
+
 ```
-[Data Byte][Control Byte]
+[Veri Byte][Kontrol Byte]
     |           |
-    |           └── Bit 0: Command/Data flag
-    |               Bit 1-7: Reserved
-    └── 8-bit payload data
+    |           └── Bit 0: Komut/Veri bayrağı
+    |               Bit 1-7: Ayrılmış
+    └── 8-bit yük verisi
 ```
 
-### 9-bit Value Format
+### 9-bit Değer Formatı
+
 ```
-Bit 8: Command flag (1=Command, 0=Data)
-Bit 7-0: Actual data/command code
+Bit 8: Komut bayrağı (1=Komut, 0=Veri)
+Bit 7-0: Gerçek veri/komut kodu
 ```
 
+### Periferik Adres Aralıkları
 
-
-
-
-
-
+```
+0x08-0x0F: Coin Changer (Bozuk Para Makinesi)
+0x10-0x17: Cashless Device (Nakit Dışı Cihaz)
+0x30-0x37: Bill Validator (Banknot Doğrulayıcı)
+```
 
 ![image](https://github.com/user-attachments/assets/22a23bdf-b255-4400-b75b-2aa334202353)
 ![image](https://github.com/user-attachments/assets/b07159b1-9819-449b-b632-81263b228653)
-
 ![image](https://github.com/user-attachments/assets/1a724ec8-8745-4392-93c1-129e8f91c481)
 
+## 🤝 Katkıda Bulunma
 
+Katkılarınızı bekliyoruz! İşte yardımcı olabileceğiniz yollar:
 
+1. **🐛 Hata Raporları**: Sorun mu buldunuz? Detaylı bir issue açın
+2. **💡 Özellik İstekleri**: Fikirlerinizi paylaşın!
+3. **🔧 Kod Katkıları**: Fork yapın, geliştirin ve PR gönderin
+4. **📖 Dokümantasyon**: Bu README'yi geliştirmeye yardım edin
 
+## 📄 Lisans
 
+Bu proje açık kaynaklıdır. Kullanmakta, değiştirmekte ve dağıtmakta özgürsünüz.
 
-
-
-
-
-
-
-
-
-
-
-## 🤝 Contributing
-
-We welcome contributions! Here's how you can help:
-
-1. **🐛 Bug Reports**: Found an issue? Open an issue with details
-2. **💡 Feature Requests**: Have ideas? Let us know!
-3. **🔧 Code Contributions**: Fork, improve, and submit PRs
-4. **📖 Documentation**: Help improve this README
-
-## 📄 License
-
-This project is open source. Feel free to use, modify, and distribute.
-
-## 👨‍💻 Author
+## 👨‍💻 Yazar
 
 **ByTaymur**
+
 - GitHub: [@ByTaymur](https://github.com/ByTaymur)
-- Specialization: Embedded systems, protocol analysis, vending machine technology
+- Uzmanlık: Gömülü sistemler, protokol analizi, otomat teknolojisi
 
-## 🙏 Acknowledgments
+## 🙏 Teşekkürler
 
-- **Saleae Team**: For the excellent Logic Analyzer platform
-- **MDB Community**: For protocol documentation and support
-- **Vending Industry**: For real-world testing scenarios
+- **Saleae Ekibi**: Mükemmel Logic Analyzer platformu için
+- **MDB Topluluğu**: Protokol dokümantasyonu ve destek için
+- **Otomat Endüstrisi**: Gerçek dünya test senaryoları için
 
-## 📞 Support
+## 📞 Destek
 
-Having issues? Here's how to get help:
+Sorun mu yaşıyorsunuz? İşte yardım almanın yolları:
 
-1. **📖 Check Documentation**: Review this README thoroughly
-2. **🔍 Search Issues**: Look for existing solutions
-3. **💬 Open Issue**: Create detailed bug report
-4. **📧 Contact**: Reach out via GitHub
+1. **📖 Dokümantasyonu Kontrol Edin**: Bu README'yi dikkatlice inceleyin
+2. **🔍 Mevcut Issue'ları Arayın**: Mevcut çözümleri arayın
+3. **💬 Issue Açın**: Detaylı hata raporu oluşturun
+4. **📧 İletişim**: GitHub üzerinden ulaşın
 
 ---
 
-⭐ **Star this project if it helped you!** ⭐
+⭐ **Bu proje işinize yaradıysa yıldız verin!** ⭐
 
-*Made with ❤️ for the embedded systems community*
+_Gömülü sistemler topluluğu için ❤️ ile yapıldı_

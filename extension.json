@@ -1,12 +1,12 @@
 {
   "name": "MDB Protocol Decoder",
   "apiVersion": "1.0.0",
-  "author": "ByTaymur",
-  "version": "9.0.0",
-  "description": "Professional Multi-Drop Bus (MDB) protocol decoder for vending machine communication analysis. Enhanced 9-bit to 2-byte conversion with detailed command parsing and data analysis.",
-  "url": "https://github.com/ByTaymur",
+  "author": "Taymur",
+  "version": "10.0.0",
+  "description": "Professional MDB (Multi-Drop Bus) protocol decoder. Supports Cashless Device, Coin Changer and Bill Validator. Advanced 9-bit to 2-byte conversion with detailed command parsing, price calculation and data analysis.",
+  "url": "",
   "extensions": {
-    "ByTaymur MDB Protocol Decoder v9": {
+    "MDB Protocol Decoder v10": {
       "type": "HighLevelAnalyzer",
       "entryPoint": "HighLevelAnalyzer.Hla"
     }
