@@ -2,11 +2,11 @@
   "name": "MDB Protocol Decoder",
   "apiVersion": "1.0.0",
   "author": "Taymur",
-  "version": "10.0.0",
-  "description": "Professional MDB (Multi-Drop Bus) protocol decoder. Supports Cashless Device, Coin Changer and Bill Validator. Advanced 9-bit to 2-byte conversion with detailed command parsing, price calculation and data analysis.",
+  "version": "11.0.0",
+  "description": "Professional MDB (Multi-Drop Bus) protocol decoder. Supports Cashless Device, Coin Changer and Bill Validator. FSM-based architecture with accumulate-then-decode, price calculation and data analysis.",
   "url": "",
   "extensions": {
-    "MDB Protocol Decoder v10": {
+    "MDB Protocol Decoder v11": {
       "type": "HighLevelAnalyzer",
       "entryPoint": "HighLevelAnalyzer.Hla"
     }
