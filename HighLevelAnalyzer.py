@@ -225,9 +225,7 @@ class Hla(HighLevelAnalyzer):
             cmd_name = self.COMMAND_NAMES.get(data, f"CMD_0x{data:02X}")
             target = self._get_device(data)
 
-            # Terminal: only print non-POLL commands
-            if not self.vmc_is_poll:
-                print(f"VMC→{target}: {cmd_name}")
+            print(f"VMC→{target}: {cmd_name}")
 
             if self.vmc_is_poll:
                 return AnalyzerFrame('vmc_poll', frame.start_time, frame.end_time, {'target': target})
@@ -240,6 +238,7 @@ class Hla(HighLevelAnalyzer):
         # IDLE + 0x00 → ACK (VMC acknowledging peripheral response)
         if self.state == self.State.IDLE:
             if data == 0x00:
+                print("→ ACK")
                 return AnalyzerFrame('per_ack', frame.start_time, frame.end_time, {})
             # Unexpected data in IDLE — show it but stay IDLE
             return AnalyzerFrame('vmc_data', frame.start_time, frame.end_time, {
@@ -378,6 +377,7 @@ class Hla(HighLevelAnalyzer):
             # IDLE: standalone control byte
             self.state = self.State.IDLE
             if data == 0x00:
+                print(f"{self.device_name}: ACK")
                 return AnalyzerFrame('per_ack', frame.start_time, frame.end_time, {})
             if data == 0xFF:
                 print(f"{self.device_name}: NAK")
